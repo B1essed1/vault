@@ -1,0 +1,97 @@
+server:
+  port: 7100
+
+logging:
+  level:
+    root: INFO
+    org.springframework.jdbc.datasource.init: debug
+  file:
+    name: /app/logs/app.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: /app/logs/app-%d{yyyy-MM-dd}.log
+      max-file-size: 10MB
+      max-history: 30
+      total-size-cap: 1GB
+spring:
+  application:
+    name: ${APP_NAME:yeisvo-service}
+  config:
+    import: "optional:configserver:,optional:vault:"
+  cloud:
+    config:
+      enabled: false
+
+
+      # ------------ Vault Configuration ----------
+    vault:
+      uri: http://localhost:8200
+      token: myroot
+      scheme: http
+      kv:
+        enabled: true
+        backend: secret
+        default-context: vault
+
+  datasource:
+    username: marketplace
+    password: marketplace
+    url: jdbc:postgresql://localhost:5432/marketplace
+
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+auth:
+  users:
+    - username: ${AUTH_USER_USERNAME:bus-yeisvo}
+      password: ${AUTH_USER_PASSWORD:rc@ffTemPre123@d}
+      role: ${AUTH_USER_ROLE:HIDE}
+      service: ${AUTH_USER_SERVICE:YEISVO}
+
+external:
+  configs:
+    yeisvo:
+      service: ${EXT_YEISVO_SERVICE:bus-yeisvo}
+      balanced: ${EXT_YEISVO_BALANCED:true}
+      host: ${EXT_YEISVO_HOST:172.30.12.10}
+      port: ${EXT_YEISVO_PORT:9191}
+      port1: ${INT_YEISVO_PORT:8181}
+      username: ${EXT_YEISVO_USERNAME:bus-yeisvo}
+      password: ${EXT_YEISVO_PASSWORD:temmp555H12@dds}
+      protocol: ${EXT_YEISVO_PROTOCOL:http}
+      baseUrl: ${EXT_YEISVO_BASE_URL:https://dev-gateway.davrbank.uz/api/v1}
+      auth-base-url: ${AUTH_BASE_URL:https://dev-gateway.davrbank.uz/api/v1/auth/oauth2/token}
+      auth-basic: ${AUTH_BASIC:YXBpLWNsaWVudDpkYXZyLWJhbmstMkAyMw==}
+      auth-username: ${AUTH_PASSWORD:yeisvo}
+      auth-password: ${AUTH_USERNAME:yeisvo61#}
+      auth-grant-type: ${AUTH_GRANT_TYPE:password}
+
+    #-----------------MINIO ------------
+  minio:
+    url: http://localhost:9000
+    access-key: minioadmin
+    secret-key: minioadmin
+    bucket: excel-files
+
+#-----------------Eureka configuration. ------------
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #            defaultZone: http://eureka:8761/eureka/
+      defaultZone: http://172.25.25.97:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
+
+
+
+

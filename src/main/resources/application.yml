@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: vault
+  config:
+    import: optional:vault://
+  cloud:
+    vault:
+      uri: http://localhost:8200
+      token: your-vault-token
+      scheme: http
+      kv:
+        enabled: true
+        backend: secret
+        default-context: ${spring.application.name}
